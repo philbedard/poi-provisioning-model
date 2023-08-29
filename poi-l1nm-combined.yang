@@ -1,0 +1,268 @@
+module ietf-l1circuit-ntw {
+    yang-version 1.1;
+    namespace "urn:ietf:params:xml:ns:yang:ietf-l2vpn-ntw";
+    prefix l1circuit-ntw;
+
+    import ietf-inet-types {
+        prefix inet;
+        reference
+        "RFC 6991: Common YANG Data Types, Section 4";
+    }
+    import ietf-yang-types {
+        prefix yang;
+        reference
+        "RFC 6991: Common YANG Data Types, Section 3";
+    }
+
+
+    organization
+        "IETF ACTN (Action and Control of Traffic Engineering Networks) Working Group";
+    contact
+        "WG Web:   <https://datatracker.ietf.org/wg/actn/>
+        WG List:  <mailto:actn@ietf.org>
+
+        Editor:    Phil Bedard 
+                <mailto:phbedard@cisco.com>
+
+        Editor:    Prasenjit Manna  
+                <mailto:samier.barguilgiraldo.ext@telefonica.com>"; 
+
+
+    description
+        "This YANG module defines a network model for Layer 1 Optical
+        Services.
+
+        Copyright (c) 2023 IETF Trust and the persons identified as
+        authors of the code.  All rights reserved.
+
+        Redistribution and use in source and binary forms, with or
+        without modification, is permitted pursuant to, and subject
+        to the license terms contained in, the Revised BSD License
+        set forth in Section 4.c of the IETF Trust's Legal Provisions
+        Relating to IETF Documents
+        (https://trustee.ietf.org/license-info).
+
+        This version of this YANG module is part of RFC 9291; see
+        the RFC itself for full legal notices.";
+
+    revision 2023-08-29 {
+        description
+        "Initial version.";
+        reference
+        "RFC 9291: A YANG Network Data Model for Layer 2 VPNs.";
+    }
+
+
+
+/* Identities */ 
+
+/* TBD */ 
+
+    typedef circuit-id-type {
+        type string;
+        description 
+            "Defines the circuit ID to unique identify each service"; 
+    }
+
+    typedef frequency-type {
+        type uint64; 
+        units "MHz"; 
+        description 
+            "Optical spectrum frequency in MHz, Example: 194.30 THz would be expressed as 194300000";   
+        }
+    
+    identity modulation-types {
+        description 
+            "Base identity for modulation types"; 
+        }
+    
+    identity QPSK {
+        base modulation-types;  
+        description 
+            "QPSK modulation type for optical configuration";  
+        }
+    
+    identity 8QAM {
+        base modulation-types;  
+        description 
+            "8QAM modulation type for optical configuration";  
+        }
+    
+    identity 16QAM {
+        base modulation-types;  
+        description 
+            "16QAM modulation type for optical configuration";  
+        }
+    
+    identity fec-types {
+        description 
+            "Base identity for modulation types"; 
+        }
+    
+    identity CFEC {
+        base fec-types;  
+        description 
+            "Concatenated FEC type"; 
+        reference 
+            "Insert OIF reference"; 
+        }
+    
+    identity OFEC {
+    base fec-types;  
+        description 
+            "OpenROADM FEC type"; 
+        reference 
+            "Insert OpenROADM reference"; 
+        }
+
+    identity framing-types {
+        description 
+            "Base identity for modulation types"; 
+        }
+    
+    identity Ethernet {
+        base fec-types;  
+        description 
+            "Ethernet Framing"; 
+        reference 
+            "Insert ZR400 reference"; 
+        }
+    
+    identity OTN {
+        base fec-types;  
+        description 
+        description 
+            "OTN Framing"; 
+        reference 
+            "Insert ITU-T reference"; 
+        }
+    
+    
+    
+    grouping organizational-mode {
+        leaf organiztion-identifier { 
+            description 
+                "Prefix to operational mode speciic to an organization or standard";  
+            type string;
+        }
+        leaf operational-identifier { 
+            description 
+                "Identifies the operational mode of the optics, must be identical on each end of the circuit"; 
+            type string;
+        }
+    }
+
+    grouping explicit-optical-configuration {
+        description  
+            "Explicit configuration for optical parameters typically defined by the operational mode. If both the operational-mode and explicit configuration are supplied, the explicit configuration will override the default setting expresed by the operatinal-mode"; 
+        container optical-configuration {
+            description 
+                "Physical layer optical configuration parameters"; 
+            leaf cd-range-min { 
+                description 
+                    "Minimum range for chromatic dispersion compensation";
+                type uint32; 
+            } 
+            leaf cd-range-max { 
+                description 
+                    "Maximum range for chromatic dispersion compensation"; 
+                type uint32; 
+            } 
+            leaf modulation-type { 
+                description 
+                    "Optical modulation EG: QPSK, 8QAM, 16QAM"; 
+                type identityref { 
+                    base modulation-types; 
+                }
+            }
+            leaf fec-type { 
+                description 
+                    "Forward Error Correction type"; 
+                type identityref { 
+                    base fec-types;  
+                }
+
+            }
+
+        } 
+
+
+    }
+    
+    grouping optical-power-config {
+        leaf target-output-power {
+            description 
+                "Transmit (TX) power value expressed in increments of .01 dBm. Example: Output power 1.50 would be expressed as 150";  
+            type uint16; 
+            units dBm; 
+        }
+    } 
+    
+    grouping optical-frequency-config {
+        leaf central-frequency {
+            description 
+                "Optical spectrum frequency expressed in Mhz"; 
+            type frequency-type;  
+        }
+    } 
+        
+    grouping optical-service-common-config { 
+        description 
+            "Common circuit administrative properties"; 
+        leaf circuit-name {
+            description 
+                "Descriptive name for the service";  
+            type string; 
+        }
+        leaf circuit-description {
+            description 
+                "Longer description of the circuit, can be used for additional meta-data associated with the circuit"; 
+            type string; 
+        }
+        leaf customer-name {
+            description 
+                "Customer associated with the circuit";  
+            type string; 
+        }
+    }
+    
+
+    grouping optical-parameter-config {
+        description
+            "Contains all optical paramter configuration"; 
+        uses organizational-mode;
+        uses explicit-optical-configuration; 
+        uses optical-frequency-config;   
+    } 
+    
+
+    grouping global-optical-configuration { 
+        description 
+            "Global optical parameter configuration used by subsequent optical endpoints";
+
+        uses optical-parameter-config; 
+    }
+
+      
+
+
+  /* Main Container */  
+  container l1nm-ntw { 
+    description 
+        "Main container for L1 circuit network services";     
+  } 
+  container "l1nm-services" { 
+    list l1nm-service {
+        leaf circuit-id { 
+            type circuit-id-type; 
+        }
+        key "circuit-id";
+
+        container global-parameters { 
+            uses optical-service-common-config; 
+            uses global-optical-configuration; 
+        } 
+         
+    }
+  }
+}
