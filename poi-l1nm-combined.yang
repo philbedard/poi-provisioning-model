@@ -180,7 +180,7 @@ module poi-l1nm-combined {
     grouping explicit-optical-configuration {
         description  
             "Explicit configuration for optical parameters typically defined by the operational mode. If both the operational-mode and explicit configuration are supplied, the explicit configuration will override the default setting expresed by the operatinal-mode"; 
-        container optical-configuration {
+        container explicit-optical-configuration {
             description 
                 "Physical layer optical configuration parameters"; 
             leaf symbol-rate { 
