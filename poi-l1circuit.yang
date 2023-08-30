@@ -201,29 +201,25 @@ module poi-l1circuit {
         reference 
             "Insert ITU-T reference"; 
         }
-    
-    identity admin-state { 
+
+
+    typedef admin-state-type {
         description 
-            "Administrative state of the circuit"; 
+        "The possible values of the administrative state.";
+        type enumeration {
+            enum LOCKED {
+                description "Users are administratively prohibited from making use of the resource.";
+            }
+            enum UNLOCKED {
+                description "Users are allowed to use the resource";
+            }
+            enum MAINTENANCE {
+                description "Resource is in maintenance state";
+            }
+        }
     } 
     
-    identity UNLOCKED {
-        base admin-state;  
-        description 
-            "Unlocked admin state means the circuit is considered to be in-service (admin up)"; 
-    } 
     
-    identity MAINTENANCE {
-        base admin-state;  
-        description 
-            "Circuit is currently in maintenance state and out of service"; 
-    } 
-    
-    identity LOCKED {
-        base admin-state;  
-        description 
-            "Circuit is currently out of service (admin down)"; 
-    } 
     grouping standard-operational-mode { 
         leaf operational-mode { 
             description
@@ -258,7 +254,7 @@ module poi-l1circuit {
             } 
             leaf host-channels { 
                 description 
-                    "Number of channels to multiplex into line side trunk. Examples: 4x100G, 2x100G, 1x400G"; 
+                    "Number of channels to multiplex into line side trunk. Examples: 4x100G, 2x100G, 1x400G, 1x100G"; 
                 type identityref { 
                     base host-port-channels-type; 
                 }
@@ -270,7 +266,7 @@ module poi-l1circuit {
                     base line-port-rate-type; 
                 }
             }
-            leaf modulation-type { 
+            leaf modulation { 
                 description 
                     "Optical modulation EG: QPSK, 8QAM, 16QAM"; 
                 type identityref { 
