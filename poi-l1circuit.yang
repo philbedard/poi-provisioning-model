@@ -93,71 +93,71 @@ module poi-l1circuit {
             "16QAM modulation type for optical configuration";  
         }
     
-    identity line-port-rates {
+    identity line-port-rate-type {
         description 
             "Base identity for support rates"; 
         }
     
-    identity RATE_800G { 
-        base line-port-rates; 
+    identity rate-type_800G { 
+        base line-port-rate-type; 
     }
 
-    identity RATE_400G { 
-        base line-port-rates; 
+    identity rate-type_400G { 
+        base line-port-rate-type; 
     }
     
-    identity RATE_100G { 
-        base line-port-rates; 
+    identity rate-type_100G { 
+        base line-port-rate-type; 
     }
     
-    identity RATE_200G { 
-        base line-port-rates; 
+    identity rate-type_200G { 
+        base line-port-rate-type; 
     }
     
-    identity RATE_300G { 
-        base line-port-rates; 
+    identity rate-type_300G { 
+        base line-port-rate-type; 
     }
     
-    identity RATE_500G { 
-        base line-port-rates; 
+    identity rate-type_500G { 
+        base line-port-rate-type; 
     }
     
-    identity RATE_600G { 
-        base line-port-rates; 
+    identity rate-type_600G { 
+        base line-port-rate-type; 
     }
     
-    identity RATE_700G { 
-        base line-port-rates; 
+    identity rate-type_700G { 
+        base line-port-rate-type; 
     }
 
-    identity host-port-channels { 
+    identity host-port-channels-type { 
         description 
             "Identities to support transponder or muxponder applications where the number of channels on the host electrical side of the port"; 
     }
     
     identity CHANNELS_1 { 
-        base host-port-channels; 
+        base host-port-channels-type; 
     }
-    identity CHANNELS_2 { 
-        base host-port-channels; 
+    identity channels-type_2 { 
+        base host-port-channels-type; 
     }
-    identity CHANNELS_3 { 
-        base host-port-channels; 
+    identity channels-type_3 { 
+        base host-port-channels-type; 
     }
-    identity CHANNELS_4 { 
-        base host-port-channels; 
+    identity channels-type_4 { 
+        base host-port-channels-type; 
     }
-    identity CHANNELS_5 { 
-        base host-port-channels; 
+    identity channels-type_5 { 
+        base host-port-channels-type; 
     }
-    identity CHANNELS_6 { 
-        base host-port-channels; 
+    identity channels-type_6 { 
+        base host-port-channels-type; 
     }
-    identity CHANNELS_7 { 
-        base host-port-channels; 
+    identity channels-type_7 { 
+        base host-port-channels-type; 
     }
-    identity CHANNELS_8 { 
-        base host-port-channels; 
+    identity channels-type_8 { 
+        base host-port-channels-type; 
     }
 
     identity fec-types {
@@ -256,6 +256,20 @@ module poi-l1circuit {
                 type uint32;
                 units MBd;  
             } 
+            leaf host-channels { 
+                description 
+                    "Number of channels to multiplex into line side trunk. Examples: 4x100G, 2x100G, 1x400G"; 
+                type identityref { 
+                    base host-port-channels-type; 
+                }
+            }
+            leaf port-rate { 
+                description 
+                    "Line side trunk rate"; 
+                type identityref { 
+                    base line-port-rate-type; 
+                }
+            }
             leaf modulation-type { 
                 description 
                     "Optical modulation EG: QPSK, 8QAM, 16QAM"; 
