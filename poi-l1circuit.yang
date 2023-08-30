@@ -219,7 +219,14 @@ module poi-l1circuit {
         }
     } 
     
-    
+
+    grouping administrative-state {
+        description 
+            "Configures the administrative state of the resource";  
+        leaf admin-state { 
+            type admin-state-type; 
+        }
+    } 
     grouping standard-operational-mode { 
         leaf operational-mode { 
             description
@@ -322,7 +329,8 @@ module poi-l1circuit {
         
     grouping optical-service-common-config { 
         description 
-            "Common circuit administrative properties"; 
+            "Common circuit administrative properties";
+        uses administrative-state;  
         leaf circuit-name {
             description 
                 "Descriptive name for the service";  
@@ -370,6 +378,7 @@ module poi-l1circuit {
             description 
                 "Identified circuit endpoint node, in POI typically a router name"; 
             type string; 
+            mandatory true; 
             }
         } 
     }
@@ -379,6 +388,12 @@ module poi-l1circuit {
         description 
             "Port specific optical parameter configuration"; 
         container port-configuration {
+            leaf port-id {
+                description 
+                    "Unique port identifier";  
+                type string; 
+                mandatory true; 
+            }
             leaf description {
                 description 
                     "Port description, can be applied as description to the device port";  
@@ -390,10 +405,11 @@ module poi-l1circuit {
                 type uint16; 
                 units dBm; 
             }
-            leaf port-id {   /* Should align to optical-impairment draft */  
+            leaf node-port-id {   /* Should align to optical-impairment draft */  
                 description
-                    "String identifying the port to be configured"; 
-                type string; 
+                    "String identifying the port to be configured on the node"; 
+                type string;
+                mandatory true;  
             }
             leaf cd-range-min { 
                 description 
@@ -417,7 +433,8 @@ module poi-l1circuit {
         container "l1nm-services" { 
             list l1nm-service {
                 leaf circuit-id { 
-                    type circuit-id-type; 
+                    type circuit-id-type;
+                    mandatory true;  
                 }
                 key "circuit-id";
 
@@ -456,7 +473,8 @@ module poi-l1circuit {
                     uses optical-service-node-configuration;  
                     uses optical-service-port-configuration;  
                 }
-            } 
+            }
+                 
             
         }
     }
