@@ -70,6 +70,12 @@ module poi-l1circuit {
             "Optical spectrum frequency in MHz, Example: 194.30 THz would be expressed as 194300000";   
         }
     
+    typedef plug-id-type { 
+        type string;
+        description 
+            "Plug-ID used to identify port when used as part of an inter-domain link. Example: Router pluggable connected to OLS ROADM add/drop port";  
+    }
+    
     identity modulation-types {
         description 
             "Base identity for modulation types"; 
@@ -365,7 +371,7 @@ module poi-l1circuit {
     }
 
 /* Use container or no? */ 
-    grouping optical-service-node-configuration { 
+    grouping node-optical-configuration { 
         description 
             "Node specific optical parameter configuration"; 
         container node-configuration { 
@@ -382,9 +388,46 @@ module poi-l1circuit {
             }
         } 
     }
-    
+
+    grouping lag-interface-configuration { 
+        description
+            "Configuration specific to managing node service interfaces part of an Ethernet LAG"; 
+            container lag-interface-config { 
+                leaf lag-interface-id { 
+                    description "Identifies LAG interface on node";
+                    type string;  
+                }
+            }
+    }
+
+
+   grouping port-srlg-configuration { 
+        description 
+            "Configuration related to application of SRLG data to node interfaces"; 
+        container srlg { 
+             
+        }
+   }
+
+   grouping ip-interface-configuration { 
+        description 
+            "IP interface address configuration"; 
+        container ip-config {
+            leaf address-ipv4 { 
+                description 
+                    "IPv4 address assigned to the host Ethernet interface"; 
+                type ietf-inet-types:ipv4-address; 
+            }
+            leaf address-ipv6 { 
+                description 
+                    "IPv6 address assigned to the host Ethernet interface"; 
+                type ietf-inet-types:ipv6-address; 
+            }
+        }
+   }
+
 /* Use container or no? */ 
-    grouping optical-service-port-configuration { 
+    grouping port-optical-configuration { 
         description 
             "Port specific optical parameter configuration"; 
         container port-configuration {
@@ -407,9 +450,19 @@ module poi-l1circuit {
             }
             leaf node-port-id {   /* Should align to optical-impairment draft */  
                 description
-                    "String identifying the port to be configured on the node"; 
+                    "String identifying the hardware port to be configured on the node"; 
                 type string;
                 mandatory true;  
+            }
+            leaf local-plug-id {  /* align to TAPI? */  
+                description
+                    "Identifier for local plug-id in inter-domain link";
+                type plug-id-type;  
+            }
+            leaf remote-plug-id {  /* align to TAPI? */  
+                description
+                    "Identifier for remote plug-id in inter-domain link, administrative use only";
+                type plug-id-type;  
             }
             leaf cd-range-min { 
                 description 
@@ -420,7 +473,9 @@ module poi-l1circuit {
                 description 
                     "Maximum range for chromatic dispersion compensation expressed in ps/nm-km"; 
                 type uint32; 
-            } 
+            }
+            uses ip-interface-configuration; 
+            uses lag-interface-configuration;  
 
         }
     }      
@@ -463,6 +518,7 @@ module poi-l1circuit {
                 description 
                     "Set of nodes terminating an optical service. Minimum 1, Maximum 2";
                 list optical-service-node {
+                    min-elements 1; 
                     max-elements 2;  
                     key "node-id";
                     leaf node-id { 
@@ -470,8 +526,9 @@ module poi-l1circuit {
                             path "../node-configuration/node-id"; 
                         }
                     }
-                    uses optical-service-node-configuration;  
-                    uses optical-service-port-configuration;  
+                    uses node-optical-configuration;  
+                    uses port-optical-configuration; 
+                    uses port-packet-configuration;   
                 }
             }
                  
