@@ -162,7 +162,8 @@ module poi-l1nm-combined {
             description
                 "Standards-based operational mode"; 
             type string;  
-    }    
+        } 
+    }   
     grouping organizational-operational-mode {
         leaf organization-identifier { 
             description 
@@ -372,7 +373,7 @@ module poi-l1nm-combined {
                     key "node-id";
                     leaf node-id { 
                         type leafref { 
-                            path "node-configuration/node-id"; 
+                            path "../node-configuration/node-id"; 
                         }
                     }
                     uses optical-service-node-configuration;  
@@ -383,6 +384,5 @@ module poi-l1nm-combined {
         }
     }
     
-    }
     }
 }
