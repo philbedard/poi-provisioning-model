@@ -405,6 +405,7 @@ module poi-l1circuit {
         }
    }
 
+/*  Probably best to not get into the weeds of IP address config in this model  
    grouping interface-ip-configuration { 
         description 
             "IP interface address configuration"; 
@@ -421,8 +422,8 @@ module poi-l1circuit {
             }
         }
    }
+*/
 
-/* Use container or no? */ 
     grouping port-optical-configuration { 
         description 
             "Port specific optical parameter configuration"; 
@@ -480,8 +481,7 @@ module poi-l1circuit {
         container port-packet-configuration { 
             description 
                 "Container for all packet layer configuration on host interface"; 
-            uses ip-interface-configuration; 
-            uses lag-interface-configuration; 
+            uses interface-lag-configuration; 
         } 
                
     }
