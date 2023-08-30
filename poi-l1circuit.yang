@@ -57,10 +57,10 @@ module poi-l1circuit {
 
 /* TBD */ 
 
-    typedef circuit-id-type {
+    typedef service-id-type {
         type string;
         description 
-            "Defines the circuit ID to unique identify each service"; 
+            "Defines the service ID to uniquely identify each service"; 
     }
 
     typedef frequency-type {
@@ -432,11 +432,11 @@ module poi-l1circuit {
             "Main container for L1 circuit network services";     
         container "l1nm-services" { 
             list l1nm-service {
-                leaf circuit-id { 
-                    type circuit-id-type;
+                leaf service-id { 
+                    type service-id-type;
                     mandatory true;  
                 }
-                key "circuit-id";
+                key "service-id";
 
             container global-parameters { 
                 uses optical-service-common-config; 
