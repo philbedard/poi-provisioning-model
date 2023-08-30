@@ -1,4 +1,4 @@
-module poi-l1nm-combined {
+module poi-l1circuit {
     yang-version 1.1;
     namespace "urn:ietf:params:xml:ns:yang:ietf-l2vpn-ntw";
     prefix l1circuit-ntw;
