@@ -1,8 +1,9 @@
-module ietf-l1circuit-ntw {
+module poi-l1nm-combined {
     yang-version 1.1;
     namespace "urn:ietf:params:xml:ns:yang:ietf-l2vpn-ntw";
     prefix l1circuit-ntw;
 
+/*
     import ietf-inet-types {
         prefix inet;
         reference
@@ -14,7 +15,7 @@ module ietf-l1circuit-ntw {
         "RFC 6991: Common YANG Data Types, Section 3";
     }
 
-
+*/
     organization
         "IETF ACTN (Action and Control of Traffic Engineering Networks) Working Group";
     contact
@@ -80,13 +81,13 @@ module ietf-l1circuit-ntw {
             "QPSK modulation type for optical configuration";  
         }
     
-    identity 8QAM {
+    identity QAM8 {
         base modulation-types;  
         description 
             "8QAM modulation type for optical configuration";  
         }
     
-    identity 16QAM {
+    identity QAM16 { 
         base modulation-types;  
         description 
             "16QAM modulation type for optical configuration";  
@@ -129,7 +130,6 @@ module ietf-l1circuit-ntw {
     identity OTN {
         base fec-types;  
         description 
-        description 
             "OTN Framing"; 
         reference 
             "Insert ITU-T reference"; 
@@ -157,8 +157,6 @@ module ietf-l1circuit-ntw {
         description 
             "Circuit is currently out of service (admin down)"; 
     } 
-
-/* Is this needed or covered under organizational using a standard org ID? */ 
     grouping standard-operational-mode { 
         leaf operational-mode { 
             description
@@ -184,15 +182,11 @@ module ietf-l1circuit-ntw {
         container optical-configuration {
             description 
                 "Physical layer optical configuration parameters"; 
-            leaf cd-range-min { 
+            leaf symbol-rate { 
                 description 
-                    "Minimum range for chromatic dispersion compensation";
-                type uint32; 
-            } 
-            leaf cd-range-max { 
-                description 
-                    "Maximum range for chromatic dispersion compensation"; 
-                type uint32; 
+                    "Symbol rate or baud rate (symbols/sec) in MBaud. Example 60.1Gbaud = 60100000";
+                type uint32;
+                units MBd;  
             } 
             leaf modulation-type { 
                 description 
@@ -207,14 +201,28 @@ module ietf-l1circuit-ntw {
                 type identityref { 
                     base fec-types;  
                 }
-
             }
-
-        } 
-
+            /* Not sure there is a standard way to express this as it could mean on, off, or a specific type of shaping (RRC, RC) */ 
+            leaf pulse-shaping { 
+                description
+                    "Defines if pulse-shaping is used on the transmit signal";
+                type enumeration { 
+                    enum ON { 
+                        description 
+                            "Enable pulse shaping on transmit signal"; 
+                    }
+                    enum OFF { 
+                        description 
+                            "Disable pulse shaping"; 
+                    }
+                }
+                default OFF; 
+            } 
+        }
 
     }
-    
+
+/* 
     grouping optical-power-config {
         leaf target-output-power {
             description 
@@ -223,7 +231,9 @@ module ietf-l1circuit-ntw {
             units dBm; 
         }
     } 
-    
+
+*/ 
+
     grouping optical-frequency-config {
         leaf central-frequency {
             description 
@@ -261,47 +271,118 @@ module ietf-l1circuit-ntw {
     } 
     
 
-    grouping global-optical-configuration { 
+    grouping optical-service-global-configuration { 
         description 
             "Global optical parameter configuration used by subsequent optical endpoints";
 
         uses optical-parameter-config; 
     }
 
-      
+/* Use container or no? */ 
+    grouping optical-service-node-configuration { 
+        description 
+            "Node specific optical parameter configuration"; 
+        container node-configuration { 
+            leaf description {
+                description 
+                    "Description of the node";  
+                type string;  
+            }
+            leaf node-id { 
+            description 
+                "Identified circuit endpoint node, in POI typically a router name"; 
+            type string; 
+            }
+        } 
+    }
+    
+/* Use container or no? */ 
+    grouping optical-service-port-configuration { 
+        description 
+            "Port specific optical parameter configuration"; 
+        container port-configuration {
+            leaf description {
+                description 
+                    "Port description, can be applied as description to the device port";  
+                type string;  
+            }
+            leaf target-output-power {
+                description 
+                    "Transmit (TX) power value expressed in increments of .01 dBm. Example: Output power 1.50 would be expressed as 150";  
+                type uint16; 
+                units dBm; 
+            }
+            leaf port-id {   /* Should align to optical-impairment draft */  
+                description
+                    "String identifying the port to be configured"; 
+                type string; 
+            }
+            leaf cd-range-min { 
+                description 
+                    "Minimum range for chromatic dispersion compensation expressed in ps/nm-km";
+                type uint32; 
+            } 
+            leaf cd-range-max { 
+                description 
+                    "Maximum range for chromatic dispersion compensation expressed in ps/nm-km"; 
+                type uint32; 
+            } 
+
+        }
+    }      
 
 
   /* Main Container */  
-  container l1nm-ntw { 
-    description 
-        "Main container for L1 circuit network services";     
-  } 
-  container "l1nm-services" { 
-    list l1nm-service {
-        leaf circuit-id { 
-            type circuit-id-type; 
-        }
-        key "circuit-id";
+    container l1nm-ntw { 
+        description 
+            "Main container for L1 circuit network services";     
+        container "l1nm-services" { 
+            list l1nm-service {
+                leaf circuit-id { 
+                    type circuit-id-type; 
+                }
+                key "circuit-id";
 
-        container global-parameters { 
-            uses optical-service-common-config; 
-            uses global-optical-configuration;
-            choice operational-mode { 
-                description
-                    "The integer operational mode sets several optical parameters using a single value, simplifying discovery and configuration. The operational mode can either be standards based or defined by an organization"; 
-                    case organization-defined {
-                        description 
-                            "An organization proprietary mode is used";  
-                        uses organizational-operational-mode;  
-                    } 
-                    case standard-defined {
-                        description 
-                            "An standards-based mode is used";  
-                        uses standard-operational-mode;  
-                    } 
+            container global-parameters { 
+                uses optical-service-common-config; 
+                uses optical-service-global-configuration;
+                choice operational-mode-config { 
+                    description
+                        "The integer operational mode sets several optical parameters using a single value, simplifying discovery and configuration. The operational mode can either be standards based or defined by an organization"; 
+                        case organization-defined {
+                            description 
+                                "An organization proprietary mode is used";  
+                            uses organizational-operational-mode;  
+                        } 
+                        case standard-defined { 
+                            description
+                                "A standards-based mode is used";
+                            leaf operational-mode {
+                                type uint16; 
+                            }
+                        }
+                
+                } 
+            }
+            container optical-service-nodes { 
+                description 
+                    "Set of nodes terminating an optical service. Minimum 1, Maximum 2";
+                list optical-service-node {
+                    max-elements 2;  
+                    key "node-id";
+                    leaf node-id { 
+                        type leafref { 
+                            path "node-configuration/node-id"; 
+                        }
+                    }
+                    uses optical-service-node-configuration;  
+                    uses optical-service-port-configuration;  
+                }
             } 
-        } 
-         
+            
+        }
     }
-  }
+    
+    }
+    }
 }
