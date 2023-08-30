@@ -21,10 +21,8 @@ module poi-l1circuit {
         WG List:  <mailto:actn@ietf.org>
 
         Editor:    Phil Bedard 
-                <mailto:phbedard@cisco.com>
+                <mailto:phbedard@cisco.com>"; 
 
-        Editor:    Prasenjit Manna  
-                <mailto:samier.barguilgiraldo.ext@telefonica.com>"; 
 
 
     description
@@ -387,7 +385,7 @@ module poi-l1circuit {
         } 
     }
 
-    grouping lag-interface-configuration { 
+    grouping interface-lag-configuration { 
         description
             "Configuration specific to managing node service interfaces part of an Ethernet LAG"; 
             container lag-interface-config { 
@@ -399,7 +397,7 @@ module poi-l1circuit {
     }
 
 
-   grouping port-srlg-configuration { 
+   grouping interface-srlg-configuration { 
         description 
             "Configuration related to application of SRLG data to node interfaces"; 
         container srlg { 
@@ -407,19 +405,19 @@ module poi-l1circuit {
         }
    }
 
-   grouping ip-interface-configuration { 
+   grouping interface-ip-configuration { 
         description 
             "IP interface address configuration"; 
         container ip-config {
             leaf address-ipv4 { 
                 description 
                     "IPv4 address assigned to the host Ethernet interface"; 
-                type ietf-inet-types:ipv4-address; 
+                type inet:ipv4-address; 
             }
             leaf address-ipv6 { 
                 description 
                     "IPv6 address assigned to the host Ethernet interface"; 
-                type ietf-inet-types:ipv6-address; 
+                type inet:ipv6-address; 
             }
         }
    }
@@ -428,7 +426,7 @@ module poi-l1circuit {
     grouping port-optical-configuration { 
         description 
             "Port specific optical parameter configuration"; 
-        container port-configuration {
+        container port-optical-configuration {
             leaf port-id {
                 description 
                     "Unique port identifier";  
@@ -472,12 +470,21 @@ module poi-l1circuit {
                     "Maximum range for chromatic dispersion compensation expressed in ps/nm-km"; 
                 type uint32; 
             }
-            uses ip-interface-configuration; 
-            uses lag-interface-configuration;  
 
         }
     }      
 
+    grouping port-packet-configuration {
+        description 
+            "Packet layer configuration for host interfaces"; 
+        container port-packet-configuration { 
+            description 
+                "Container for all packet layer configuration on host interface"; 
+            uses ip-interface-configuration; 
+            uses lag-interface-configuration; 
+        } 
+               
+    }
 
   /* Main Container */  
     container l1nm-ntw { 
