@@ -48,8 +48,6 @@ module ietf-l1circuit-ntw {
     revision 2023-08-29 {
         description
         "Initial version.";
-        reference
-        "RFC 9291: A YANG Network Data Model for Layer 2 VPNs.";
     }
 
 
@@ -120,7 +118,7 @@ module ietf-l1circuit-ntw {
             "Base identity for modulation types"; 
         }
     
-    identity Ethernet {
+    identity ETHERNET {
         base fec-types;  
         description 
             "Ethernet Framing"; 
@@ -137,10 +135,38 @@ module ietf-l1circuit-ntw {
             "Insert ITU-T reference"; 
         }
     
+    identity admin-state { 
+        description 
+            "Administrative state of the circuit"; 
+    } 
     
+    identity UNLOCKED {
+        base admin-state;  
+        description 
+            "Unlocked admin state means the circuit is considered to be in-service (admin up)"; 
+    } 
     
-    grouping organizational-mode {
-        leaf organiztion-identifier { 
+    identity MAINTENANCE {
+        base admin-state;  
+        description 
+            "Circuit is currently in maintenance state and out of service"; 
+    } 
+    
+    identity LOCKED {
+        base admin-state;  
+        description 
+            "Circuit is currently out of service (admin down)"; 
+    } 
+
+/* Is this needed or covered under organizational using a standard org ID? */ 
+    grouping standard-operational-mode { 
+        leaf operational-mode { 
+            description
+                "Standards-based operational mode"; 
+            type string;  
+    }    
+    grouping organizational-operational-mode {
+        leaf organization-identifier { 
             description 
                 "Prefix to operational mode speciic to an organization or standard";  
             type string;
@@ -230,7 +256,6 @@ module ietf-l1circuit-ntw {
     grouping optical-parameter-config {
         description
             "Contains all optical paramter configuration"; 
-        uses organizational-mode;
         uses explicit-optical-configuration; 
         uses optical-frequency-config;   
     } 
@@ -260,7 +285,21 @@ module ietf-l1circuit-ntw {
 
         container global-parameters { 
             uses optical-service-common-config; 
-            uses global-optical-configuration; 
+            uses global-optical-configuration;
+            choice operational-mode { 
+                description
+                    "The integer operational mode sets several optical parameters using a single value, simplifying discovery and configuration. The operational mode can either be standards based or defined by an organization"; 
+                    case organization-defined {
+                        description 
+                            "An organization proprietary mode is used";  
+                        uses organizational-operational-mode;  
+                    } 
+                    case standard-defined {
+                        description 
+                            "An standards-based mode is used";  
+                        uses standard-operational-mode;  
+                    } 
+            } 
         } 
          
     }
