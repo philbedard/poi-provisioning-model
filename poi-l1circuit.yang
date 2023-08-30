@@ -3,7 +3,6 @@ module poi-l1circuit {
     namespace "urn:ietf:params:xml:ns:yang:ietf-l2vpn-ntw";
     prefix l1circuit-ntw;
 
-/*
     import ietf-inet-types {
         prefix inet;
         reference
@@ -15,7 +14,6 @@ module poi-l1circuit {
         "RFC 6991: Common YANG Data Types, Section 3";
     }
 
-*/
     organization
         "IETF ACTN (Action and Control of Traffic Engineering Networks) Working Group";
     contact
