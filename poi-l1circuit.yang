@@ -75,24 +75,91 @@ module poi-l1circuit {
             "Base identity for modulation types"; 
         }
     
-    identity QPSK {
+    identity MODULATION_QPSK {
         base modulation-types;  
         description 
             "QPSK modulation type for optical configuration";  
         }
     
-    identity QAM8 {
+    identity MODULATION_8QAM {
         base modulation-types;  
         description 
             "8QAM modulation type for optical configuration";  
         }
     
-    identity QAM16 { 
+    identity MODULATION_16QAM { 
         base modulation-types;  
         description 
             "16QAM modulation type for optical configuration";  
         }
     
+    identity line-port-rates {
+        description 
+            "Base identity for support rates"; 
+        }
+    
+    identity RATE_800G { 
+        base line-port-rates; 
+    }
+
+    identity RATE_400G { 
+        base line-port-rates; 
+    }
+    
+    identity RATE_100G { 
+        base line-port-rates; 
+    }
+    
+    identity RATE_200G { 
+        base line-port-rates; 
+    }
+    
+    identity RATE_300G { 
+        base line-port-rates; 
+    }
+    
+    identity RATE_500G { 
+        base line-port-rates; 
+    }
+    
+    identity RATE_600G { 
+        base line-port-rates; 
+    }
+    
+    identity RATE_700G { 
+        base line-port-rates; 
+    }
+
+    identity host-port-channels { 
+        description 
+            "Identities to support transponder or muxponder applications where the number of channels on the host electrical side of the port"; 
+    }
+    
+    identity CHANNELS_1 { 
+        base host-port-channels; 
+    }
+    identity CHANNELS_2 { 
+        base host-port-channels; 
+    }
+    identity CHANNELS_3 { 
+        base host-port-channels; 
+    }
+    identity CHANNELS_4 { 
+        base host-port-channels; 
+    }
+    identity CHANNELS_5 { 
+        base host-port-channels; 
+    }
+    identity CHANNELS_6 { 
+        base host-port-channels; 
+    }
+    identity CHANNELS_7 { 
+        base host-port-channels; 
+    }
+    identity CHANNELS_8 { 
+        base host-port-channels; 
+    }
+
     identity fec-types {
         description 
             "Base identity for modulation types"; 
