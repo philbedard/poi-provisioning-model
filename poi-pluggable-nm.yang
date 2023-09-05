@@ -15,10 +15,10 @@ module poi-pluggable-nm {
     }
 
     organization
-        "IETF ACTN (Action and Control of Traffic Engineering Networks) Working Group";
+        "IETF CCAMP (Common Control and Measurement Plane) Working Group";
     contact
-        "WG Web:   <https://datatracker.ietf.org/wg/actn/>
-        WG List:  <mailto:actn@ietf.org>
+        "WG Web:   <https://datatracker.ietf.org/wg/ccamp/>
+        WG List:  <mailto:ccamp@ietf.org>
 
         Editor:    Phil Bedard 
                 <mailto:phbedard@cisco.com>"; 
