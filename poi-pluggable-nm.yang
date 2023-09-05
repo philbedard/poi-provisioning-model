@@ -1,6 +1,6 @@
-module poi-l1circuit {
+module poi-pluggable-nm {
     yang-version 1.1;
-    namespace "urn:ietf:params:xml:ns:yang:ietf-l2vpn-ntw";
+    namespace "urn:ietf:params:xml:ns:yang:poi-pluggable-ntw";
     prefix l1circuit-ntw;
 
     import ietf-inet-types {
@@ -26,8 +26,7 @@ module poi-l1circuit {
 
 
     description
-        "This YANG module defines a network model for Layer 1 Optical
-        Services.
+        "This YANG module defines a network model for managing pluggable optics terminating DWDM optical network circuits.   
 
         Copyright (c) 2023 IETF Trust and the persons identified as
         authors of the code.  All rights reserved.
@@ -405,25 +404,6 @@ module poi-l1circuit {
         }
    }
 
-/*  Probably best to not get into the weeds of IP address config in this model  
-   grouping interface-ip-configuration { 
-        description 
-            "IP interface address configuration"; 
-        container ip-config {
-            leaf address-ipv4 { 
-                description 
-                    "IPv4 address assigned to the host Ethernet interface"; 
-                type inet:ipv4-address; 
-            }
-            leaf address-ipv6 { 
-                description 
-                    "IPv6 address assigned to the host Ethernet interface"; 
-                type inet:ipv6-address; 
-            }
-        }
-   }
-*/
-
     grouping port-optical-configuration { 
         description 
             "Port specific optical parameter configuration"; 
@@ -487,59 +467,56 @@ module poi-l1circuit {
     }
 
   /* Main Container */  
-    container l1nm-ntw { 
+    container poi-pluggable-ntw { 
         description 
-            "Main container for L1 circuit network services";     
-        container "l1nm-services" { 
-            list l1nm-service {
+            "Main container for service definition and configuration";     
+        container "optical-services" { 
+            list optical-service {
                 leaf service-id { 
                     type service-id-type;
                     mandatory true;  
                 }
                 key "service-id";
 
-            container global-parameters { 
-                uses optical-service-common-config; 
-                uses optical-service-global-configuration;
-                choice operational-mode-config { 
-                    description
-                        "The integer operational mode sets several optical parameters using a single value, simplifying discovery and configuration. The operational mode can either be standards based or defined by an organization"; 
-                        case organization-defined {
-                            description 
-                                "An organization proprietary mode is used";  
-                            uses organizational-operational-mode;  
-                        } 
-                        case standard-defined { 
-                            description
-                                "A standards-based mode is used";
-                            leaf operational-mode {
-                                type uint16; 
+                container global-parameters { 
+                    uses optical-service-common-config; 
+                    uses optical-service-global-configuration;
+                    choice operational-mode-config { 
+                        description
+                            "The integer operational mode sets several optical parameters using a single value, simplifying discovery and configuration. The operational mode can either be standards based or defined by an organization"; 
+                            case organization-defined {
+                                description 
+                                    "An organization proprietary mode is used";  
+                                uses organizational-operational-mode;  
+                            } 
+                            case standard-defined { 
+                                description
+                                    "A standards-based mode is used";
+                                leaf operational-mode {
+                                    type uint16; 
+                                }
+                            }
+                    
+                    } 
+                }
+                container optical-service-nodes { 
+                    description 
+                        "Set of nodes terminating an optical service. Minimum 1, Maximum 2";
+                    list optical-service-node {
+                        min-elements 1; 
+                        max-elements 2;  
+                        key "node-id";
+                        leaf node-id { 
+                            type leafref { 
+                                path "../node-configuration/node-id"; 
                             }
                         }
-                
-                } 
-            }
-            container optical-service-nodes { 
-                description 
-                    "Set of nodes terminating an optical service. Minimum 1, Maximum 2";
-                list optical-service-node {
-                    min-elements 1; 
-                    max-elements 2;  
-                    key "node-id";
-                    leaf node-id { 
-                        type leafref { 
-                            path "../node-configuration/node-id"; 
-                        }
+                        uses node-optical-configuration;  
+                        uses port-optical-configuration; 
+                        uses port-packet-configuration;   
                     }
-                    uses node-optical-configuration;  
-                    uses port-optical-configuration; 
-                    uses port-packet-configuration;   
                 }
             }
-                 
-            
         }
-    }
-    
     }
 }
