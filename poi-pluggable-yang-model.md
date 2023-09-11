@@ -11,6 +11,8 @@ keyword = ["Internet-Draft"]
 
 [pi]
 toc = "yes"
+tocdepth: 3 
+
 
 [[author]]
 initials = "P.Bedard"
@@ -153,15 +155,10 @@ downsream.
 
 # Reference Architecture 
 
-Figure 1 from
-[@https://datatracker.ietf.org/doc/draft-poidt-ccamp-actn-poi-pluggable] depicts
-the ACTN framework as applied to a multi-layer network using packet nodes
-equipped with pluggable DWDM transceivers connected to an optical photonic line
-system.  
 
 
 {#fig1}
-~~~
+~~~ ascii-art
                            +----------+
                            |   MDSC   |
                            +--+----+--+
@@ -189,12 +186,13 @@ system.
       P.N. = Packet/Optical Node (IPoWDM router)
       O.N. = Optical Switching DWDM Node (ROADM)
 ~~~
-
-   Figure 2 shows a use case when the Packet Node pluggable DWDM ports are
-   connected to intermediate ROADM ports on the Optical Node  
+Figure: [@https://datatracker.ietf.org/doc/draft-poidt-ccamp-actn-poi-pluggable]
+depicts the ACTN framework as applied to a multi-layer network using packet
+nodes equipped with pluggable DWDM transceivers connected to an optical photonic
+line system.  
 
 {#fig2}
-~~~ 
+~~~ ascii-art 
       +------+       +------+  _________  +------+       +------+
       |P.N.1 |       | O.N. | /        /\ | O.N. |       |P.N.2 |
       |    P1| ----- |      ||        |  ||      | ----- |P1    |
@@ -211,14 +209,12 @@ system.
    ROADM = Lambda/Spectrum switch
    Px = DWDM (coherent pluggable) Router ports
 ~~~
-
-   Figure 3 depicts a scenario where either the pluggable DWDM transceivers are
-   connected over dark fiber, or the photonic optical line system is not not
-   managed within the same framework.  
+Figure: Shows a use case when the Packet Node pluggable DWDM ports are
+connected to intermediate ROADM ports on the Optical Node  
 
 
 {#fig3}
-~~~ 
+~~~ ascii-art 
       +------+            +------+
       |P.N.1 |            |P.N.2 |
       |    P1| ---------- |P1    |
@@ -233,13 +229,12 @@ system.
    P.N. = Packet/Optical Node (IPoDWDM router)
    Px = DWDM (coherent pluggable) Router ports
 ~~~
-
-
-   Figure 4 depicts the responsibility of the model defined in this document in
-   the overall architecture. 
+Figure: Depicts a scenario where either the pluggable DWDM transceivers are
+connected over dark fiber, or the photonic optical line system is not not
+managed within the same framework.  
 
 {#fig4}
-~~~
+~~~ ascii-art
                    +-------------------------+
                    |   MDSC / Orchestrator   |
                    +-------------------------+
@@ -265,6 +260,8 @@ system.
       P.N. = Packet/Optical Node (IPoWDM router)
       O.N. = Optical Switching DWDM Node (ROADM)
 ~~~
+Figure: Depicts the responsibility of the model defined in this document in
+the overall architecture. 
 
 
 
@@ -432,7 +429,7 @@ In summary the pluggable parameters exchanged from O-PNC to MDSC to
     - Admin-state (common ?)
 
 
-    
+
 https://datatracker.ietf.org/doc/draft-ietf-ccamp-l1csm-yang/
 
 Reference to the optical impairment model for pluggable discovery using RFC 8345 
@@ -444,13 +441,10 @@ https://datatracker.ietf.org/doc/html/draft-ietf-teas-actn-poi-applicability
 Reference to the current ACTN POI pluggable draft:   
 https://datatracker.ietf.org/doc/draft-poidt-ccamp-actn-poi-pluggable/
 
-Reference to L1CSM? L1NM?   
-
 
 # Security Considerations
 
-As outlined earlier in (#usecases), there could be security issues in
-various use cases.
+No current security considerations.  
 
 # IANA Considerations
 
