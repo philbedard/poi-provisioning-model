@@ -11,7 +11,12 @@ keyword = ["Internet-Draft"]
 
 [pi]
 toc = "yes"
-tocdepth: 3 
+
+[seriesInfo]
+name = "Internet-Draft"
+value = "poi-pluggable-nm-yang"
+stream = "IETF"
+status = "standard"
 
 
 [[author]]
@@ -99,7 +104,7 @@ according to the Packet Optical
 
 [@!RFC8453] defines a controller based framework decomposing the control of
 networks to specific administrative or technology domains. The Packet Optical
-Integration (POI) draft [@!I-D.draft-ietf-teas-actn-poi-applicability] defines
+Integration (POI) draft [I-D.draft-ietf-teas-actn-poi-applicability] defines
 the roles and responsibilities of network controllers participating in a
 multi-layer Packet and Optical network. 
 
@@ -186,7 +191,7 @@ downsream.
       P.N. = Packet/Optical Node (IPoWDM router)
       O.N. = Optical Switching DWDM Node (ROADM)
 ~~~
-Figure: [@https://datatracker.ietf.org/doc/draft-poidt-ccamp-actn-poi-pluggable]
+Figure: [https://datatracker.ietf.org/doc/draft-poidt-ccamp-actn-poi-pluggable]
 depicts the ACTN framework as applied to a multi-layer network using packet
 nodes equipped with pluggable DWDM transceivers connected to an optical photonic
 line system.  
@@ -297,7 +302,7 @@ The 'optical service" container and its 'global-parameters" is used to define
 the optical service and common optical parameters which MUST match between the
 packet nodes participating in the service. 
 
-The operational-mode is used similarly to [@L1CSM]. It abstracts several optical
+The operational-mode is used similarly to [L1CSM]. It abstracts several optical
 configuration parameters to a single identifier.  As an alternative the model
 user may explicitly define optical configuration. The parameter values are
 passed to the node by the P-PNC without modification. The node SHOULD utilize
@@ -348,7 +353,7 @@ standard format, it will be defined by the node naming conventions.
 ### Port Packet Configuration 
 The port-packet-configuration defines packet-layer configuration to be
 optionally applied to the node. Currently to support the LAG requirements
-defined in [@POI-Pluggable], the LAG interface ID can be defined. The
+defined in [POI-Pluggable], the LAG interface ID can be defined. The
 configuration for the LAG ID MUST be translated by the P-PNC into the node
 configuration. If no LAG has been defined a new LAG will be created.
 
