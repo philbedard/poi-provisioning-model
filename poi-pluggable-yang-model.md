@@ -40,10 +40,6 @@ the DWDM endpoint is a pluggable optics module in a Packet layer device.
 The YANG model defined represents a Network Model used by a network control to
 derive the configuration used to a downstream network controller.
 
-
-
-[https://github.com/mmarkdown/mmark/](https://github.com/mmarkdown/mmark/).
-
 {mainmatter}
 # Status of this Memo 
 
@@ -86,17 +82,16 @@ utilize a photonic optical network, there will continue to be applications where
 traditional optical line systems are utilized to create end to end photonic
 paths.  
 
-according to the Packet Optical
-   Integration (POI) draft [I-D.draft-ietf-teas-actn-poi-applicability]
-   in which ACTN hierarchy is deployed [RFC8453], the PNCs are in charge
-   of controlling a single domain (e.g.  Packet or Optical) while the
-   MDSC is responsible to coordinate the operations across the different
-   domains having the visibility of the whole multi-domain and multi-
-   layer network topology.
+According to the Packet Optical Integration (POI) draft
+[@I-D.ietf-teas-actn-poi-applicability] in which ACTN hierarchy is deployed
+[RFC8453], the PNCs are in charge of controlling a single domain (e.g.  Packet
+or Optical) while the MDSC is responsible to coordinate the operations across
+the different domains having the visibility of the whole multi-domain and multi-
+layer network topology.
 
 [@!RFC8453] defines a controller based framework decomposing the control of
 networks to specific administrative or technology domains. The Packet Optical
-Integration (POI) draft [I-D.draft-ietf-teas-actn-poi-applicability] defines
+Integration (POI) draft [@I-D.ietf-teas-actn-poi-applicability] defines
 the roles and responsibilities of network controllers participating in a
 multi-layer Packet and Optical network. 
 
