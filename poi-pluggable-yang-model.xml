@@ -6,8 +6,6 @@
 <title abbrev="YANG-POI-PLUGGABLE-NM">A YANG Network Data Model for Pluggable DWDM Circuits Management</title><seriesInfo value="poi-pluggable-nm-yang" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
 <author initials="P.Bedard" surname="Bedard" fullname="Phil Bedard"><organization>Cisco Systems</organization><address><postal><street></street>
 </postal><email>phbedard@cisco.com</email>
-</address></author><author initials="P.Test" surname="Test" fullname="Phil Bedard"><organization>Cisco Systems</organization><address><postal><street></street>
-</postal><email>testing@cisco.com</email>
 </address></author><date year="2023" month="August" day="30"></date>
 <area>General</area>
 <workgroup>CCAMP</workgroup>
@@ -19,7 +17,6 @@ provisioning optical circuits across a disaggregated multi-layer network when
 the DWDM endpoint is a pluggable optics module in a Packet layer device.</t>
 <t>The YANG model defined represents a Network Model used by a network control to
 derive the configuration used to a downstream network controller.</t>
-<t><eref target="https://github.com/mmarkdown/mmark/">https://github.com/mmarkdown/mmark/</eref>.</t>
 </abstract>
 
 </front>
@@ -62,22 +59,64 @@ circuit endpoints located in a packet device. While some applications may not
 utilize a photonic optical network, there will continue to be applications where
 traditional optical line systems are utilized to create end to end photonic
 paths.</t>
-<t>according to the Packet Optical
-   Integration (POI) draft [I-D.draft-ietf-teas-actn-poi-applicability]
-   in which ACTN hierarchy is deployed [RFC8453], the PNCs are in charge
-   of controlling a single domain (e.g.  Packet or Optical) while the
-   MDSC is responsible to coordinate the operations across the different
-   domains having the visibility of the whole multi-domain and multi-
-   layer network topology.</t>
+<t>According to the Packet Optical Integration (POI) draft
+<xref target="I-D.ietf-teas-actn-poi-applicability"></xref> in which ACTN hierarchy is deployed
+<xref target="RFC8453"></xref>, the PNCs are in charge of controlling a single domain (e.g.  Packet
+or Optical) while the MDSC is responsible to coordinate the operations across
+the different domains having the visibility of the whole multi-domain and multi-
+layer network topology.</t>
 <t><xref target="RFC8453"></xref> defines a controller based framework decomposing the control of
 networks to specific administrative or technology domains. The Packet Optical
-Integration (POI) draft [I-D.draft-ietf-teas-actn-poi-applicability] defines
+Integration (POI) draft <xref target="I-D.ietf-teas-actn-poi-applicability"></xref> defines
 the roles and responsibilities of network controllers participating in a
 multi-layer Packet and Optical network.</t>
 <t>The pluggable optics module residing in a packet device is under the management
 of the packet domain. As such, the model defined in this document would
 typically be exposed by a packet network controller to a higher layer controller
-or orchestrator. This is aligned to the</t>
+or orchestrator. This is aligned to <xref target="I-D.poidt-ccamp-actn-poi-pluggable"></xref>,
+extending<br />
+<xref target="I-D.ietf-teas-actn-poi-applicability"></xref> in use cases where a pluggable DWDM
+optic resides in a packet layer device.</t>
+
+<section anchor="use-cases-and-applicability"><name>Use Cases and Applicability</name>
+<t>The model presented in this document is to be used for configuration of optical
+services. It is expected for the controller utilizing the model to support basic
+CRUD (Create, Read, Update, Delete) operations. Discovery of the optics
+inventory, optics capabilities, and state are covered in the following drafts
+below for informational purposes.  The information gathered using these models
+can be directly used by the model defined in this document.</t>
+
+<ul>
+<li>Optics Capabilities Discovery:
+<xref target="I-D.ietf-ccamp-optical-impairment-topology-yang"></xref></li>
+<li><t>Packet Network Hardware Inventory: <xref target="I-D.yg3bp-ccamp-optical-inventory-yang"></xref></t>
+
+<section anchor="multi-domain-service-controller-mdsc"><name>Multi-Domain Service Controller (MDSC)</name>
+</li>
+</ul>
+<t>The MDSC can expose the model to allow multi-layer circuit provisioning.  The
+MDSC will consume the model to then render pluggable configuration intent to a
+downstream Packet Provisioning Network Controller (P-PNC) and communicate
+photonic circuit configuration intent to the Optical Provisioning Network
+Controller (O-PNC). Each of these downstream configuration intents is optional,
+allowing the same model to be used by the MDSC to perform three provisioning use
+cases.</t>
+
+<ul spacing="compact">
+<li>Multi-Layer provisioning towards P-PNC and O-PNC</li>
+<li>Pluggable DCO DWDM endpoint configuration only towards P-PNC</li>
+<li>Photonic optical circuit only towards O-PNC</li>
+</ul>
+</section>
+
+<section anchor="packet-provisioning-network-controller-p-pnc"><name>Packet Provisioning Network Controller (P-PNC)</name>
+<t>The P-PNC exposes the model to allow configuration of pluggable optics within
+its scope of control. The model exposed by the P-PNC is a subset of the complete
+model, containing the portions of the model applicable to the configuration of
+the pluggable. The P-PNC will not consume the components of the model used for
+photonic optical line system provisioning.</t>
+</section>
+</section>
 </section>
 
 <section anchor="conventions-and-terminology"><name>Conventions and Terminology</name>
@@ -184,7 +223,7 @@ managed within the same framework.<br />
 </sourcecode>
 </figure>
 <figure anchor="fig4"><name>Depicts the responsibility of the model defined in this document in
-the overall architecture.
+the overall architecture defined in <xref target="I-D.ietf-teas-actn-poi-applicability"></xref>
 </name>
 <sourcecode type="ascii-art">                   +-------------------------+
                    |   MDSC / Orchestrator   |
@@ -317,9 +356,9 @@ configuration. If no LAG has been defined a new LAG will be created.</t>
 </section>
 </section>
 
-<section anchor="additional-info"><name>Additional Info?</name>
+<section anchor="additional-information-rename"><name>Additional Information (rename)</name>
 
-<section anchor="multi-domain-service-controller-mdsc"><name>Multi-Domain Service Controller (MDSC)</name>
+<section anchor="multi-domain-service-controller-mdsc-1"><name>Multi-Domain Service Controller (MDSC)</name>
 <t>The MDSC can expose the model to allow multi-layer circuit provisioning.  The
 MDSC will consume the model to then render pluggable configuration intent to a
 downstream Packet Provisioning Network Controller (P-PNC) and communicate
@@ -335,7 +374,7 @@ cases.</t>
 </ul>
 </section>
 
-<section anchor="packet-provisioning-network-controller-p-pnc"><name>Packet Provisioning Network Controller (P-PNC)</name>
+<section anchor="packet-provisioning-network-controller-p-pnc-1"><name>Packet Provisioning Network Controller (P-PNC)</name>
 <t>The P-PNC can expose the model to allow configuration of pluggable optics within
 its scope of control. The model exposed by the P-PNC is a subset of the complete
 model, containing the portions of the model applicable to the configuration of
@@ -344,14 +383,6 @@ photonic optical line system provisioning.</t>
 </section>
 
 <section anchor="optical-provisioning-network-controller-o-pnc"><name>Optical Provisioning Network Controller (O-PNC)</name>
-<t>The models utilized for optical circuit provisioning to support are already well-defined</t>
-<t>Packet network controller model for pluggable management?</t>
-<t>Model has following components and leaf values aligned to other models like L1CSM</t>
-<t>circuit-id RW
-operational-mode RW
-encapsulation (Ethernet|OTN)
-frequency?<br />
-bandwidth?</t>
 <t>In summary the pluggable parameters exchanged from O-PNC to MDSC to
    P-PNC for end to end service provisioning are:</t>
 
@@ -387,6 +418,10 @@ bandwidth?</t>
 
 <back>
 <references><name>Normative References</name>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml-ids/reference.I-D.ietf-ccamp-optical-impairment-topology-yang.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml-ids/reference.I-D.ietf-teas-actn-poi-applicability.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml-ids/reference.I-D.poidt-ccamp-actn-poi-pluggable.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml-ids/reference.I-D.yg3bp-ccamp-optical-inventory-yang.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
 <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8340.xml"/>

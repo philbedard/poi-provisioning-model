@@ -83,23 +83,62 @@ traditional optical line systems are utilized to create end to end photonic
 paths.  
 
 According to the Packet Optical Integration (POI) draft
-[@I-D.ietf-teas-actn-poi-applicability] in which ACTN hierarchy is deployed
-[RFC8453], the PNCs are in charge of controlling a single domain (e.g.  Packet
+[@!I-D.ietf-teas-actn-poi-applicability] in which ACTN hierarchy is deployed
+[@!RFC8453], the PNCs are in charge of controlling a single domain (e.g.  Packet
 or Optical) while the MDSC is responsible to coordinate the operations across
 the different domains having the visibility of the whole multi-domain and multi-
 layer network topology.
 
 [@!RFC8453] defines a controller based framework decomposing the control of
 networks to specific administrative or technology domains. The Packet Optical
-Integration (POI) draft [@I-D.ietf-teas-actn-poi-applicability] defines
+Integration (POI) draft [@!I-D.ietf-teas-actn-poi-applicability] defines
 the roles and responsibilities of network controllers participating in a
 multi-layer Packet and Optical network. 
 
 The pluggable optics module residing in a packet device is under the management
 of the packet domain. As such, the model defined in this document would
 typically be exposed by a packet network controller to a higher layer controller
-or orchestrator. This is aligned to the 
- 
+or orchestrator. This is aligned to [@!I-D.poidt-ccamp-actn-poi-pluggable],
+extending  
+[@!I-D.ietf-teas-actn-poi-applicability] in use cases where a pluggable DWDM
+optic resides in a packet layer device.  
+
+## Use Cases and Applicability 
+
+The model presented in this document is to be used for configuration of optical
+services. It is expected for the controller utilizing the model to support basic
+CRUD (Create, Read, Update, Delete) operations. Discovery of the optics
+inventory, optics capabilities, and state are covered in the following drafts
+below for informational purposes.  The information gathered using these models
+can be directly used by the model defined in this document.  
+
+- Optics Capabilities Discovery:
+  [@!I-D.ietf-ccamp-optical-impairment-topology-yang]
+- Packet Network Hardware Inventory: [@!I-D.yg3bp-ccamp-optical-inventory-yang]
+
+### Multi-Domain Service Controller (MDSC)
+
+The MDSC can expose the model to allow multi-layer circuit provisioning.  The
+MDSC will consume the model to then render pluggable configuration intent to a
+downstream Packet Provisioning Network Controller (P-PNC) and communicate
+photonic circuit configuration intent to the Optical Provisioning Network
+Controller (O-PNC). Each of these downstream configuration intents is optional,
+allowing the same model to be used by the MDSC to perform three provisioning use
+cases. 
+
+- Multi-Layer provisioning towards P-PNC and O-PNC 
+- Pluggable DCO DWDM endpoint configuration only towards P-PNC 
+- Photonic optical circuit only towards O-PNC 
+
+### Packet Provisioning Network Controller (P-PNC)  
+
+The P-PNC exposes the model to allow configuration of pluggable optics within
+its scope of control. The model exposed by the P-PNC is a subset of the complete
+model, containing the portions of the model applicable to the configuration of
+the pluggable. The P-PNC will not consume the components of the model used for
+photonic optical line system provisioning. 
+
+
 
 # Conventions and Terminology  
 
@@ -253,11 +292,7 @@ managed within the same framework.
       O.N. = Optical Switching DWDM Node (ROADM)
 ~~~
 Figure: Depicts the responsibility of the model defined in this document in
-the overall architecture. 
-
-
-
-
+the overall architecture defined in [@!I-D.ietf-teas-actn-poi-applicability] 
 
 # Description of the POI Pluggable Network Module YANG Module  
 
@@ -368,7 +403,7 @@ configuration. If no LAG has been defined a new LAG will be created.
 
 ~~~
 
-# Additional Info?  
+# Additional Information (rename) 
 
 ## Multi-Domain Service Controller (MDSC)
 
@@ -393,18 +428,6 @@ the pluggable. The P-PNC will not consume the components of the model used for
 photonic optical line system provisioning.  
 
 ## Optical Provisioning Network Controller (O-PNC)  
-
-The models utilized for optical circuit provisioning to support are already well-defined 
-
-Packet network controller model for pluggable management? 
-
-Model has following components and leaf values aligned to other models like L1CSM 
-
-circuit-id RW 
-operational-mode RW 
-encapsulation (Ethernet|OTN)
-frequency?  
-bandwidth? 
 
 
 In summary the pluggable parameters exchanged from O-PNC to MDSC to
