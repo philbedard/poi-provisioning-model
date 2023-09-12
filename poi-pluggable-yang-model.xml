@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- name="GENERATOR" content="github.com/mmarkdown/mmark Mmark Markdown Processor - mmark.miek.nl" -->
-<rfc version="3" ipr="trust200902" submissionType="IETF" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" indexInclude="true" consensus="true">
+<rfc version="3" ipr="trust200902" docName="poi-pluggable-nm-yang" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" indexInclude="true" consensus="true">
 
 <front>
-<title abbrev="YANG-POI-PLUGGABLE-NM">A YANG Network Data Model for Pluggable DWDM Circuits Management</title><seriesInfo></seriesInfo>
+<title abbrev="YANG-POI-PLUGGABLE-NM">A YANG Network Data Model for Pluggable DWDM Circuits Management</title><seriesInfo value="poi-pluggable-nm-yang" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
 <author initials="P.Bedard" surname="Bedard" fullname="Phil Bedard"><organization>Cisco Systems</organization><address><postal><street></street>
 </postal><email>phbedard@cisco.com</email>
 </address></author><author initials="P.Test" surname="Test" fullname="Phil Bedard"><organization>Cisco Systems</organization><address><postal><street></street>

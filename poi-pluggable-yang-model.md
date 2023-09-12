@@ -27,14 +27,6 @@ organization = "Cisco Systems"
   [author.address]
    email = "phbedard@cisco.com"
 
-[[author]]
-initials = "P.Test"
-surname = "Test"
-fullname = "Phil Bedard"
-organization = "Cisco Systems"
-  [author.address]
-   email = "testing@cisco.com"
-
 
 %%%
 
