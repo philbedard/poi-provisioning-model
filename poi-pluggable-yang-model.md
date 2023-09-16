@@ -294,6 +294,53 @@ managed within the same framework.
 Figure: Depicts the responsibility of the model defined in this document in
 the overall architecture defined in [@!I-D.ietf-teas-actn-poi-applicability] 
 
+# YANG Tree 
+
+~~~ yang 
+module: poi-pluggable-ntw
+  +--rw poi-pluggable-ntw
+     +--rw optical-services
+        +--rw optical-service* [service-id]
+           +--rw service-id               service-id-type
+           +--rw global-parameters
+           |  +--rw admin-state?                      admin-state-type
+           |  +--rw circuit-name?                     string
+           |  +--rw circuit-description?              string
+           |  +--rw customer-name?                    string
+           |  +--rw explicit-optical-configuration
+           |  |  +--rw symbol-rate?     uint32
+           |  |  +--rw host-channels?   identityref
+           |  |  +--rw port-rate?       identityref
+           |  |  +--rw modulation?      identityref
+           |  |  +--rw fec-type?        identityref
+           |  |  +--rw pulse-shaping?   enumeration
+           |  +--rw central-frequency?                frequency-type
+           |  +--rw (operational-mode-config)?
+           |     +--:(organization-defined)
+           |     |  +--rw organization-identifier?    string
+           |     |  +--rw operational-identifier?     string
+           |     +--:(standard-defined)
+           |        +--rw operational-mode?           uint16
+           +--rw optical-service-nodes
+              +--rw optical-service-node* [node-id]
+                 +--rw node-id                       -> ../node-configuration/node-id
+                 +--rw node-configuration
+                 |  +--rw description?   string
+                 |  +--rw node-id        string
+                 +--rw port-optical-configuration
+                 |  +--rw port-id                string
+                 |  +--rw description?           string
+                 |  +--rw target-output-power?   uint16
+                 |  +--rw node-port-id           string
+                 |  +--rw local-plug-id?         plug-id-type
+                 |  +--rw remote-plug-id?        plug-id-type
+                 |  +--rw cd-range-min?          uint32
+                 |  +--rw cd-range-max?          uint32
+                 +--rw port-packet-configuration
+                    +--rw lag-interface-config
+                       +--rw lag-interface-id?   string
+~~~
+
 # Description of the POI Pluggable Network Module YANG Module  
 
 ## Model Structure
