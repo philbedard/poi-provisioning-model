@@ -294,7 +294,7 @@ managed within the same framework.
 Figure: Depicts the responsibility of the model defined in this document in
 the overall architecture defined in [@!I-D.ietf-teas-actn-poi-applicability] 
 
-# YANG Tree 
+# YANG Tree
 
 ~~~ yang 
 module: poi-pluggable-ntw

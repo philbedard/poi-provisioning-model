@@ -77,21 +77,22 @@ Table of Contents
        3.1.2.  Packet Provisioning Network Controller (P-PNC)  . . .   4
    4.  Conventions and Terminology . . . . . . . . . . . . . . . . .   5
    5.  Reference Architecture  . . . . . . . . . . . . . . . . . . .   5
-   6.  Description of the POI Pluggable Network Module YANG
-           Module  . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     6.1.  Model Structure . . . . . . . . . . . . . . . . . . . . .   8
-     6.2.  Optical Service and Global Parameters . . . . . . . . . .   9
-     6.3.  Packet Node Configuration . . . . . . . . . . . . . . . .   9
-       6.3.1.  Port Optical Configuration  . . . . . . . . . . . . .  10
-       6.3.2.  Port Packet Configuration . . . . . . . . . . . . . .  10
-   7.  Additional Information (rename) . . . . . . . . . . . . . . .  10
-     7.1.  Multi-Domain Service Controller (MDSC)  . . . . . . . . .  10
-     7.2.  Packet Provisioning Network Controller (P-PNC)  . . . . .  11
-     7.3.  Optical Provisioning Network Controller (O-PNC) . . . . .  11
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
-   10. Normative References  . . . . . . . . . . . . . . . . . . . .  12
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  13
+   6.  YANG Tree . . . . . . . . . . . . . . . . . . . . . . . . . .   8
+   7.  Description of the POI Pluggable Network Module YANG
+           Module  . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     7.1.  Model Structure . . . . . . . . . . . . . . . . . . . . .   9
+     7.2.  Optical Service and Global Parameters . . . . . . . . . .  10
+     7.3.  Packet Node Configuration . . . . . . . . . . . . . . . .  11
+       7.3.1.  Port Optical Configuration  . . . . . . . . . . . . .  11
+       7.3.2.  Port Packet Configuration . . . . . . . . . . . . . .  11
+   8.  Additional Information (rename) . . . . . . . . . . . . . . .  12
+     8.1.  Multi-Domain Service Controller (MDSC)  . . . . . . . . .  12
+     8.2.  Packet Provisioning Network Controller (P-PNC)  . . . . .  12
+     8.3.  Optical Provisioning Network Controller (O-PNC) . . . . .  13
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
+   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
+   11. Normative References  . . . . . . . . . . . . . . . . . . . .  13
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  15
 
 1.  Status of this Memo
 
@@ -103,9 +104,8 @@ Table of Contents
    Internet Engineering Steering Group (IESG).  Further information on
    Internet Standards is available in Section 2 of RFC 7841.
 
-   Information about the current status of this document, any errata,
-   and how to provide feedback on it may be obtained at https://www.rfc-
-   editor.org/info/rfc9291 (https://www.rfc-editor.org/info/rfc9291).
+
+
 
 
 
@@ -113,6 +113,10 @@ Bedard                    Expires 2 March 2024                  [Page 2]
 
 Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
 
+
+   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at https://www.rfc-
+   editor.org/info/rfc9291 (https://www.rfc-editor.org/info/rfc9291).
 
 2.  Copyright Notice
 
@@ -156,10 +160,6 @@ Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
    [I-D.ietf-teas-actn-poi-applicability] defines the roles and
    responsibilities of network controllers participating in a multi-
    layer Packet and Optical network.
-
-
-
-
 
 
 
@@ -423,9 +423,88 @@ Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
               document in the overall architecture defined in
                    [I-D.ietf-teas-actn-poi-applicability]
 
-6.  Description of the POI Pluggable Network Module YANG Module
+6.  YANG Tree
 
-6.1.  Model Structure
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Bedard                    Expires 2 March 2024                  [Page 8]
+
+Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
+
+
+   module: poi-pluggable-ntw
+     +--rw poi-pluggable-ntw
+        +--rw optical-services
+           +--rw optical-service* [service-id]
+              +--rw service-id               service-id-type
+              +--rw global-parameters
+              |  +--rw admin-state?                      admin-state-type
+              |  +--rw circuit-name?                     string
+              |  +--rw circuit-description?              string
+              |  +--rw customer-name?                    string
+              |  +--rw explicit-optical-configuration
+              |  |  +--rw symbol-rate?     uint32
+              |  |  +--rw host-channels?   identityref
+              |  |  +--rw port-rate?       identityref
+              |  |  +--rw modulation?      identityref
+              |  |  +--rw fec-type?        identityref
+              |  |  +--rw pulse-shaping?   enumeration
+              |  +--rw central-frequency?                frequency-type
+              |  +--rw (operational-mode-config)?
+              |     +--:(organization-defined)
+              |     |  +--rw organization-identifier?    string
+              |     |  +--rw operational-identifier?     string
+              |     +--:(standard-defined)
+              |        +--rw operational-mode?           uint16
+              +--rw optical-service-nodes
+                 +--rw optical-service-node* [node-id]
+                    +--rw node-id                       -> ../node-configuration/node-id
+                    +--rw node-configuration
+                    |  +--rw description?   string
+                    |  +--rw node-id        string
+                    +--rw port-optical-configuration
+                    |  +--rw port-id                string
+                    |  +--rw description?           string
+                    |  +--rw target-output-power?   uint16
+                    |  +--rw node-port-id           string
+                    |  +--rw local-plug-id?         plug-id-type
+                    |  +--rw remote-plug-id?        plug-id-type
+                    |  +--rw cd-range-min?          uint32
+                    |  +--rw cd-range-max?          uint32
+                    +--rw port-packet-configuration
+                       +--rw lag-interface-config
+                          +--rw lag-interface-id?   string
+
+7.  Description of the POI Pluggable Network Module YANG Module
+
+7.1.  Model Structure
+
+
+
+
+
+Bedard                    Expires 2 March 2024                  [Page 9]
+
+Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
+
 
    module: poi-pluggable-ntw
      +--rw poi-pluggable-ntw
@@ -443,14 +522,7 @@ Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
                     ...
                        +--rw lag-interface-config
 
-
-
-Bedard                    Expires 2 March 2024                  [Page 8]
-
-Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
-
-
-6.2.  Optical Service and Global Parameters
+7.2.  Optical Service and Global Parameters
 
    The 'optical service" container and its 'global-parameters" is used
    to define the optical service and common optical parameters which
@@ -463,6 +535,32 @@ Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
    P-PNC without modification.  The node SHOULD utilize the explicit
    configuration when both explicit configuration and an operational-
    mode are defined.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Bedard                    Expires 2 March 2024                 [Page 10]
+
+Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
+
 
    module: poi-pluggable-ntw
      +--rw poi-pluggable-ntw
@@ -490,23 +588,12 @@ Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
               |        +--rw operational-mode?           uint16
               +--rw optical-service-nodes
 
-6.3.  Packet Node Configuration
+7.3.  Packet Node Configuration
 
    The optical-service-nodes list defines the nodes participating in the
    service.  The list can contain one or two elements.
 
-
-
-
-
-
-
-Bedard                    Expires 2 March 2024                  [Page 9]
-
-Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
-
-
-6.3.1.  Port Optical Configuration
+7.3.1.  Port Optical Configuration
 
    The node-configuration container has two child containers.  The port-
    optical-configuration defines the configuration applied to the
@@ -514,7 +601,7 @@ Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
    not defined in a standard format, it will be defined by the node
    naming conventions.
 
-6.3.2.  Port Packet Configuration
+7.3.2.  Port Packet Configuration
 
    The port-packet-configuration defines packet-layer configuration to
    be optionally applied to the node.  Currently to support the LAG
@@ -522,6 +609,14 @@ Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
    defined.  The configuration for the LAG ID MUST be translated by the
    P-PNC into the node configuration.  If no LAG has been defined a new
    LAG will be created.
+
+
+
+
+Bedard                    Expires 2 March 2024                 [Page 11]
+
+Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
+
 
              +--rw optical-service-nodes
                  +--rw optical-service-node* [node-id]
@@ -542,9 +637,9 @@ Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
                        +--rw lag-interface-config
                           +--rw lag-interface-id?   string
 
-7.  Additional Information (rename)
+8.  Additional Information (rename)
 
-7.1.  Multi-Domain Service Controller (MDSC)
+8.1.  Multi-Domain Service Controller (MDSC)
 
    The MDSC can expose the model to allow multi-layer circuit
    provisioning.  The MDSC will consume the model to then render
@@ -555,18 +650,11 @@ Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
    allowing the same model to be used by the MDSC to perform three
    provisioning use cases.
 
-
-
-Bedard                    Expires 2 March 2024                 [Page 10]
-
-Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
-
-
    *  Multi-Layer provisioning towards P-PNC and O-PNC
    *  Pluggable DCO DWDM endpoint configuration only towards P-PNC
    *  Photonic optical circuit only towards O-PNC
 
-7.2.  Packet Provisioning Network Controller (P-PNC)
+8.2.  Packet Provisioning Network Controller (P-PNC)
 
    The P-PNC can expose the model to allow configuration of pluggable
    optics within its scope of control.  The model exposed by the P-PNC
@@ -575,7 +663,18 @@ Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
    will not consume the components of the model used for photonic
    optical line system provisioning.
 
-7.3.  Optical Provisioning Network Controller (O-PNC)
+
+
+
+
+
+
+Bedard                    Expires 2 March 2024                 [Page 12]
+
+Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
+
+
+8.3.  Optical Provisioning Network Controller (O-PNC)
 
    In summary the pluggable parameters exchanged from O-PNC to MDSC to
    P-PNC for end to end service provisioning are:
@@ -608,25 +707,28 @@ Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
    pluggable/ (https://datatracker.ietf.org/doc/draft-poidt-ccamp-actn-
    poi-pluggable/)
 
-
-
-
-
-
-Bedard                    Expires 2 March 2024                 [Page 11]
-
-Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
-
-
-8.  Security Considerations
+9.  Security Considerations
 
    No current security considerations.
 
-9.  IANA Considerations
+10.  IANA Considerations
 
    This document has no IANA actions.
 
-10.  Normative References
+11.  Normative References
+
+
+
+
+
+
+
+
+
+Bedard                    Expires 2 March 2024                 [Page 13]
+
+Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
+
 
    [I-D.ietf-ccamp-optical-impairment-topology-yang]
               Beller, D., Le Rouzic, E., Belotti, S., Galimberti, G.,
@@ -663,17 +765,6 @@ Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
               <https://datatracker.ietf.org/doc/html/draft-yg3bp-ccamp-
               optical-inventory-yang-01>.
 
-
-
-
-
-
-
-Bedard                    Expires 2 March 2024                 [Page 12]
-
-Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
-
-
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -686,6 +777,14 @@ Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
    [RFC8340]  Bjorklund, M. and L. Berger, Ed., "YANG Tree Diagrams",
               BCP 215, RFC 8340, DOI 10.17487/RFC8340, March 2018,
               <https://www.rfc-editor.org/info/rfc8340>.
+
+
+
+
+Bedard                    Expires 2 March 2024                 [Page 14]
+
+Internet-Draft            YANG-POI-PLUGGABLE-NM              August 2023
+
 
    [RFC8453]  Ceccarelli, D., Ed. and Y. Lee, Ed., "Framework for
               Abstraction and Control of TE Networks (ACTN)", RFC 8453,
@@ -725,4 +824,17 @@ Author's Address
 
 
 
-Bedard                    Expires 2 March 2024                 [Page 13]
+
+
+
+
+
+
+
+
+
+
+
+
+
+Bedard                    Expires 2 March 2024                 [Page 15]
